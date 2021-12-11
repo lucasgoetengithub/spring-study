@@ -1,6 +1,5 @@
 package com.estudo.springstudy;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.estudo.springstudy.domain.Categoria;
 import com.estudo.springstudy.domain.Cidade;
+import com.estudo.springstudy.domain.Cliente;
+import com.estudo.springstudy.domain.Endereco;
 import com.estudo.springstudy.domain.Estado;
 import com.estudo.springstudy.domain.Produto;
+import com.estudo.springstudy.domain.enums.TipoCliente;
 import com.estudo.springstudy.repository.CategoriaRepository;
 import com.estudo.springstudy.repository.CidadeRepository;
+import com.estudo.springstudy.repository.ClienteRepository;
+import com.estudo.springstudy.repository.EnderecoRepository;
 import com.estudo.springstudy.repository.EstadoRepository;
 import com.estudo.springstudy.repository.ProdutoRepository;
 
@@ -31,6 +35,12 @@ public class SpringStudyApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringStudyApplication.class, args);
@@ -67,6 +77,15 @@ public class SpringStudyApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Lucas Eduardo Goeten", "lucasgoeten@email.com", "32165498764",TipoCliente.PESSOA_FISICA);
+		cli1.getTelefones().addAll(Arrays.asList("321654", "1234522"));
+		
+		Endereco end1 = new Endereco(null, "Rua avenida almeira", "300", "apto 1", "Jardim", "64654", cli1, c1);
+		cli1.getEnderecos().addAll(Arrays.asList(end1));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(end1));
 	}
 
 }
