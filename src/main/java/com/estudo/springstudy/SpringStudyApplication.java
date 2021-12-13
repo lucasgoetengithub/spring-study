@@ -1,5 +1,6 @@
 package com.estudo.springstudy;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,19 @@ import com.estudo.springstudy.domain.Cidade;
 import com.estudo.springstudy.domain.Cliente;
 import com.estudo.springstudy.domain.Endereco;
 import com.estudo.springstudy.domain.Estado;
+import com.estudo.springstudy.domain.Pagamento;
+import com.estudo.springstudy.domain.PagamentoComCartao;
+import com.estudo.springstudy.domain.Pedido;
 import com.estudo.springstudy.domain.Produto;
+import com.estudo.springstudy.domain.enums.EstadoPagamento;
 import com.estudo.springstudy.domain.enums.TipoCliente;
 import com.estudo.springstudy.repository.CategoriaRepository;
 import com.estudo.springstudy.repository.CidadeRepository;
 import com.estudo.springstudy.repository.ClienteRepository;
 import com.estudo.springstudy.repository.EnderecoRepository;
 import com.estudo.springstudy.repository.EstadoRepository;
+import com.estudo.springstudy.repository.PagamentoRepository;
+import com.estudo.springstudy.repository.PedidoRepository;
 import com.estudo.springstudy.repository.ProdutoRepository;
 
 @SpringBootApplication
@@ -41,6 +48,12 @@ public class SpringStudyApplication implements CommandLineRunner {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringStudyApplication.class, args);
@@ -83,6 +96,17 @@ public class SpringStudyApplication implements CommandLineRunner {
 		
 		Endereco end1 = new Endereco(null, "Rua avenida almeira", "300", "apto 1", "Jardim", "64654", cli1, c1);
 		cli1.getEnderecos().addAll(Arrays.asList(end1));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2021 10:32"), cli1, end1);
+		
+		Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pag1);
+		
+		cli1.getPedidos().addAll(Arrays.asList(ped1));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1));
+		pagamentoRepository.saveAll(Arrays.asList(pag1));
 		
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(end1));
