@@ -2,8 +2,10 @@ package com.estudo.springstudy.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -31,7 +34,16 @@ public class Produto implements Serializable{
 		inverseJoinColumns = @JoinColumn(name="categoria_id")
 	)
 	private List<Categoria> categorias = new ArrayList<>();
-	
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedido> itemPedidos = new HashSet<>();
+
+	public List<Pedido> getPedidos(){
+		List<Pedido> list = new ArrayList<>();
+		for (ItemPedido x : itemPedidos) {
+			list.add(x.getPedido());
+		}
+		return list;
+	}
 	public Produto() {
 		
 	}
@@ -77,6 +89,14 @@ public class Produto implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Set<ItemPedido> getItemPedidos() {
+		return itemPedidos;
+	}
+
+	public void setItemPedidos(Set<ItemPedido> itemPedidos) {
+		this.itemPedidos = itemPedidos;
 	}
 
 	@Override
