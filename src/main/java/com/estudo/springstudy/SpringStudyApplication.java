@@ -68,17 +68,7 @@ public class SpringStudyApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
-		Categoria cat3 = new Categoria(null, "Cama mesa e banho");
-		Categoria cat4 = new Categoria(null, "Quarto");
-		Categoria cat5 = new Categoria(null, "Sala de estar");
-		Categoria cat6 = new Categoria(null, "Sala de jantar");
-		Categoria cat7 = new Categoria(null, "Cozinha");
-		Categoria cat8 = new Categoria(null, "Lavação");
-		Categoria cat9 = new Categoria(null, "Quarto de criança");
-		Categoria cat10 = new Categoria(null, "Brinquedos");
-		Categoria cat11 = new Categoria(null, "Tapeçaria");
-		Categoria cat12 = new Categoria(null, "Eletrodomesticos");
-		Categoria cat13 = new Categoria(null, "Decoração");
+		
 
 		Produto p1 = new Produto(null, "Computador", 2000.00);
 		Produto p2 = new Produto(null, "Impressora", 800.00);
@@ -92,7 +82,7 @@ public class SpringStudyApplication implements CommandLineRunner {
 		p3.getCategorias().addAll(Arrays.asList(cat1));
 
 		categoriaRepository.saveAll(
-				Arrays.asList(cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10, cat11, cat12, cat13));
+				Arrays.asList(cat1, cat2));
 		produtoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
 		Estado est1 = new Estado(null, "Santa Catarina");
