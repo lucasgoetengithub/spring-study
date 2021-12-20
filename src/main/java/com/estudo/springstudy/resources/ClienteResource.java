@@ -1,6 +1,7 @@
 package com.estudo.springstudy.resources;
 
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,9 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.estudo.springstudy.domain.Categoria;
 import com.estudo.springstudy.domain.Cliente;
+import com.estudo.springstudy.dto.CategoriaDTO;
 import com.estudo.springstudy.dto.ClienteDTO;
+import com.estudo.springstudy.dto.ClienteNewDTO;
 import com.estudo.springstudy.service.ClienteService;
 
 @RestController
@@ -63,5 +68,13 @@ public class ClienteResource {
 		Page<Cliente> Clientes = clienteService.findPage(page, linesPerPage, orderBy, direction);
 		Page<ClienteDTO> listDto = Clientes.map(obj -> new ClienteDTO(obj));
 		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO) {
+		Cliente obj = clienteService.fromDTO(objDTO);
+		obj = clienteService.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 }

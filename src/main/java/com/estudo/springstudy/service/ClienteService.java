@@ -60,4 +60,8 @@ public class ClienteService {
 		newCliente.setEmail(oldCliente.getEmail());
 	}
 	
+	public Cliente insert(Cliente obj) {
+		obj.setId(null);
+		return repo.save(obj);
+	}
 }
