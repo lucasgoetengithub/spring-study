@@ -10,9 +10,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.estudo.springstudy.domain.Cidade;
 import com.estudo.springstudy.domain.Cliente;
+import com.estudo.springstudy.domain.Endereco;
+import com.estudo.springstudy.domain.enums.TipoCliente;
 import com.estudo.springstudy.dto.ClienteDTO;
+import com.estudo.springstudy.dto.ClienteNewDTO;
+import com.estudo.springstudy.repository.CidadeRepository;
 import com.estudo.springstudy.repository.ClienteRepository;
+import com.estudo.springstudy.repository.EnderecoRepository;
 import com.estudo.springstudy.service.exception.DataIntegrityException;
 import com.estudo.springstudy.service.exception.ObjectNotFoundException;
 
@@ -21,6 +27,12 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
@@ -55,6 +67,23 @@ public class ClienteService {
 		return new Cliente(clienteDTO.getId(), clienteDTO.getNome(), clienteDTO.getEmail(), null, null);
 	}
 	
+	public Cliente fromDTO(ClienteNewDTO clienteNewDTO) {
+		Cliente newCliente = new Cliente(null, clienteNewDTO.getNome(), clienteNewDTO.getEmail(), clienteNewDTO.getCpfOuCnpj(), TipoCliente.toEnum(clienteNewDTO.getTipoCliente()));
+		Optional<Cidade> cidade = cidadeRepository.findById(clienteNewDTO.getCidadeId());
+		Endereco newEndereco = new Endereco(null, clienteNewDTO.getLogradouro(), clienteNewDTO.getNumero(), clienteNewDTO.getComplemento(), clienteNewDTO.getBairro(), clienteNewDTO.getCep(), newCliente, cidade.get());
+		newCliente.getEnderecos().add(newEndereco);
+		newCliente.getTelefones().add(clienteNewDTO.getTelefone1());
+		if (clienteNewDTO.getTelefone2() != null) {
+			newCliente.getTelefones().add(clienteNewDTO.getTelefone2());
+		}
+		
+		if (clienteNewDTO.getTelefone3() != null) {
+			newCliente.getTelefones().add(clienteNewDTO.getTelefone3());
+		}
+		
+		return newCliente;
+	}
+	
 	private void updateData(Cliente newCliente, Cliente oldCliente) {
 		newCliente.setNome(oldCliente.getNome());
 		newCliente.setEmail(oldCliente.getEmail());
@@ -62,6 +91,8 @@ public class ClienteService {
 	
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		obj = repo.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 }

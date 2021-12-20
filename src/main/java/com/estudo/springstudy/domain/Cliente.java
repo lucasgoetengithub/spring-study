@@ -54,7 +54,7 @@ public class Cliente implements Serializable{
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipoCliente = (tipoCliente ==null) ? null : tipoCliente.getCode();
+		this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getCode();
 	}
 
 	@Override
