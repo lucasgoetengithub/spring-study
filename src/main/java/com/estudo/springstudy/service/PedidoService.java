@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.estudo.springstudy.domain.ItemPedido;
-import com.estudo.springstudy.domain.Pagamento;
 import com.estudo.springstudy.domain.PagamentoComBoleto;
-import com.estudo.springstudy.domain.PagamentoComCartao;
 import com.estudo.springstudy.domain.Pedido;
 import com.estudo.springstudy.domain.enums.EstadoPagamento;
 import com.estudo.springstudy.repository.ItemPedidoRepository;
