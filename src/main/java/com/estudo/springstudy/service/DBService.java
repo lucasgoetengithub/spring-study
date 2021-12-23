@@ -19,6 +19,7 @@ import com.estudo.springstudy.domain.PagamentoComCartao;
 import com.estudo.springstudy.domain.Pedido;
 import com.estudo.springstudy.domain.Produto;
 import com.estudo.springstudy.domain.enums.EstadoPagamento;
+import com.estudo.springstudy.domain.enums.Perfil;
 import com.estudo.springstudy.domain.enums.TipoCliente;
 import com.estudo.springstudy.repository.CategoriaRepository;
 import com.estudo.springstudy.repository.CidadeRepository;
@@ -97,12 +98,29 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
+		//Inicio - Cliente 1
 		Cliente cli1 = new Cliente(null, "Lucas Eduardo Goeten", "lucasgoeten@email.com", "32165498764",
 				TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("321654", "1234522"));
 
 		Endereco end1 = new Endereco(null, "Rua avenida almeira", "300", "apto 1", "Jardim", "64654", cli1, c1);
+		
 		cli1.getEnderecos().addAll(Arrays.asList(end1));
+		
+		//Final - Cliente 1
+		
+		//Inicio - Cliente 2
+		
+		Cliente cli2 = new Cliente(null, "ADM  - Lucas Eduardo Goeten", "lucasgoetenadmin@email.com", "99200837042",
+				TipoCliente.PESSOA_FISICA, bCryptPasswordEncoder.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("321654", "1234522"));
+		cli2.addPerfis(Perfil.ADMIN);
+		
+		Endereco end2 = new Endereco(null, "Rua avenida Minas Gerais", "400", "apto 2", "Jardim", "64654", cli2, c1);
+		
+		cli2.getEnderecos().addAll(Arrays.asList(end2));
+		
+		//Final - Cliente 2
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2021 10:32"), cli1, end1);
@@ -112,8 +130,8 @@ public class DBService {
 
 		cli1.getPedidos().addAll(Arrays.asList(ped1));
 
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(end1));
+		clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2));
 
 		pedidoRepository.saveAll(Arrays.asList(ped1));
 		pagamentoRepository.saveAll(Arrays.asList(pag1));
