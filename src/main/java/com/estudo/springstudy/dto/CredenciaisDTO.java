@@ -7,6 +7,7 @@ public class CredenciaisDTO implements Serializable {
 
 	private String username;
 	private String senha;
+	private String email;
 
 	public String getUsername() {
 		return username;
@@ -26,6 +27,14 @@ public class CredenciaisDTO implements Serializable {
 
 	public CredenciaisDTO() {
 
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
