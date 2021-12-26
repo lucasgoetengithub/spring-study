@@ -11,19 +11,17 @@ import com.estudo.springstudy.repository.ClienteRepository;
 import com.estudo.springstudy.security.UserSS;
 
 @Service
-public class UserDetailServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private ClienteRepository clienteRepository;
-
+	private ClienteRepository repo;
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Cliente cli = clienteRepository.findByEmail(email);
+		Cliente cli = repo.findByEmail(email);
 		if (cli == null) {
 			throw new UsernameNotFoundException(email);
 		}
-
 		return new UserSS(cli.getId(), cli.getEmail(), cli.getSenha(), cli.getPerfis());
 	}
-
 }
